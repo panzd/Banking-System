@@ -10,3 +10,5 @@ Golang中基于REST的微服务API开发，实现一个简易的银行系统(Gol
 - [ ]  对请求方法进行约束
 - [ ]  部署Service服务端口和repository存储
  
+
+Mock Adapter -> Database Adapter
