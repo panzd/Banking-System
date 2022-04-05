@@ -48,10 +48,10 @@ DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions`(
     `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
     `account_id` int(11) NOT NULL,
-    `amount` int(11) NOT NULL,
+    `amount` decimal(10,2) NOT NULL,
     `transaction_type` varchar(10) NOT NULL,
     `transaction_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`transaction_id`),
     KEY `transactions_FK`(`account_id`),
-    CONSTRAINT `transactions_FK` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`)
+    CONSTRAINT `transactions_FK` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`)
 )ENGINE = InnoDB DEFAULT CHARSET=latin1;

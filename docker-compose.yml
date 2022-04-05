@@ -1,0 +1,17 @@
+
+version: '3'
+services:
+  image: mysql:8.0.28
+  ports:
+    -"127.0.0.1:3306:3306"
+  volumes:
+    - mysqldata:/var/lib/mysql
+    - ./initdb:/docker-entrypoint-initdb.d
+  container_name: mysql
+  environment:
+    MYSQL_ROOT_PASSWORD:admin
+    TZ:Asia/Beijing
+
+volumes:
+  mysqldata:
+    driver:local
