@@ -1,8 +1,6 @@
 CREATE DATABASE banking;
 USE banking;
 
-USE banking;
-
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
     `customer_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -13,17 +11,15 @@ CREATE TABLE `customers` (
     `status` tinyint(1) NOT NULL DEFAULT '1',
     PRIMARY KEY(`customer_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT=2006 DEFAULT CHARSET=latin1;
-
 INSERT INTO `customers` VALUES
     (2000,'Jason','1997-03-01','Shanghai','210000',1),
     (2001,'Naci','1997-03-02','Shanghai','210000',1),
-    (2002,'Archie','1997-03-03','Shanghai','210000',1);
+    (2002,'Archie','1997-03-03','Shanghai','210000',1),
     (2003,'Ben','1997-03-04','Manchester, NH','03102',0),
 	(2004,'Nina','1997-03-05','Clarkston, MI','48348',1),
 	(2005,'Osman','1997-03-06','Hyattsville, MD','20782',0);
 
 DROP TABLE IF EXISTS `accounts`;
-
 CREATE TABLE `accounts` (
     `account_id` int(11) NOT NULL AUTO_INCREMENT,
     `customer_id` int(11) NOT NULL,
@@ -38,13 +34,12 @@ CREATE TABLE `accounts` (
 ) ENGINE = InnoDB AUTO_INCREMENT=95471 DEFAULT CHARSET=latin1;
 
 INSERT INTO `accounts` VALUES
-    (95470,2000,'2022-03-25 10:20:06','saving',107,1),
-    (95471,2002,'2022-03-25 10:21:22','saving',1255,1),
-    (95472,2001,'2022-03-25 10:21:22','checking',0723,1);
+    (95470,2000,'2022-03-25 10:20:06','saving', 107, 1),
+    (95471,2002,'2022-03-25 10:21:22','saving', 1255,1),
+    (95472,2001,'2022-03-25 10:21:22','checking', 0723,1),
     (95473,2001,'2022-03-25 10:21:22','saving',0723,1);
 
 DROP TABLE IF EXISTS `transactions`;
-
 CREATE TABLE `transactions`(
     `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
     `account_id` int(11) NOT NULL,
