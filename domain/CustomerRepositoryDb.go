@@ -9,23 +9,16 @@ import (
 )
 
 type CustomerRepositoryDb struct {
+	client *sql.DB
 }
 
 func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
-	client, err := sql.Open("mysql", "user:password@/dbname")
-	if err != nil {
-		panic(err)
-	}
-	// See "Important settings" section.
-	client.SetConnMaxLifetime(time.Minute * 3)
-	client.SetMaxOpenConns(10)
-	client.SetMaxIdleConns(10)
 
 	// 每次查询都会创建一个连接池
 
 	findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
 
-	rows, err := client.Query(findAllSql)
+	rows, err := d.client.Query(findAllSql) //映射？
 
 	if err != nil {
 		log.Println("Error while querying customer table" + err.Error())
@@ -46,6 +39,15 @@ func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
 	return customers, nil
 }
 
-func NewCustomerRepositoryDb() {
+func NewCustomerRepositoryDb() CustomerRepositoryDb {
+	client, err := sql.Open("mysql", "root:admin@tcp(localhost:3306/banking")
+	if err != nil {
+		panic(err)
+	}
+	// See "Important settings" section.
+	client.SetConnMaxLifetime(time.Minute * 3)
+	client.SetMaxOpenConns(10)
+	client.SetMaxIdleConns(10)
 
+	return CustomerRepositoryDb{client}
 }
