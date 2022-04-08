@@ -3,7 +3,6 @@ package app
 import (
 	"encoding/json"
 	"encoding/xml"
-	"fmt"
 	"net/http"
 
 	"github.com/Banking-System/service"
@@ -47,12 +46,23 @@ func (ch *CustomerHandlers) getCustomer(w http.ResponseWriter, r *http.Request) 
 	customer, err := ch.service.GetCustomer(id)
 
 	if err != nil {
-		w.WriteHeader(err.Code)
-		fmt.Fprintf(w, err.Message)
+		writeResponse(w, err.Code, err.AsMessage())
+		// w.WriteHeader(err.Code)
+		// w.Header().Add("Content-Type", "application/json")
+		// json.NewEncoder(w).Encode(err.AsMessage())
+		//fmt.Fprintf(w, err.Message)
 	} else {
-		w.Header().Add("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(customer)
+		writeResponse(w, http.StatusOK, customer)
+		// w.Header().Add("Content-Type", "application/json")
+		// w.WriteHeader(http.StatusOK)
+		// json.NewEncoder(w).Encode(customer)
 	}
+}
+
+func writeResponse(w http.ResponseWriter, code int, data interface{}) {
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(code)
+	json.NewEncoder(w).Encode(data)
 }
 
 // func getCustomer(w http.ResponseWriter, r *http.Request) {

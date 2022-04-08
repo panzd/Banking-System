@@ -12,6 +12,9 @@ Golang中基于REST的微服务API开发，实现一个简易的银行系统
 - [ ]  尝试返回硬编码数据
 - [ ]  Mock Adapter -> Database Adapter 正式连接到MySQL
 - [ ]  创建ID接口
-- [ ]  建立错误信息返回
+- [ ]  创建错误信息返回函数
+- [ ]  创建写响应函数
+- [ ]  重构JSON解码函数
+
  
 
