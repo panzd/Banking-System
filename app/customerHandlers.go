@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	"net/http"
 
 	"github.com/Banking-System/service"
@@ -27,15 +26,22 @@ func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Reque
 	// 	{Name: "Naci", City: "shanghai", Zipcode: "210000"},
 	// }
 
-	customers, _ := ch.service.GetAllCustomer()
+	status := r.URL.Query().Get("status")
 
-	if r.Header.Get("Content-Type") == "application/xml" {
-		w.Header().Add("Content-Type", "application/xml")
-		xml.NewEncoder(w).Encode(customers)
+	customers, err := ch.service.GetAllCustomer(status)
+
+	if err != nil {
+		writeResponse(w, err.Code, err.AsMessage())
 	} else {
-		w.Header().Add("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(customers)
+		writeResponse(w, http.StatusOK, customers)
 	}
+	// if r.Header.Get("Content-Type") == "application/xml" {
+	// 	w.Header().Add("Content-Type", "application/xml")
+	// 	xml.NewEncoder(w).Encode(customers)
+	// } else {
+	// 	w.Header().Add("Content-Type", "application/json")
+	// 	json.NewEncoder(w).Encode(customers)
+	// }
 
 }
 
@@ -62,7 +68,9 @@ func (ch *CustomerHandlers) getCustomer(w http.ResponseWriter, r *http.Request) 
 func writeResponse(w http.ResponseWriter, code int, data interface{}) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(data)
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		panic(err)
+	}
 }
 
 // func getCustomer(w http.ResponseWriter, r *http.Request) {

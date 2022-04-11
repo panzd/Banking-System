@@ -13,6 +13,7 @@ type Customer struct {
 
 type CustomerRepository interface {
 	// 业务意图，而不是技术意图
-	FindAll() ([]Customer, error)
+	// status == 1 status == 0 status == ""
+	FindAll(status string) ([]Customer, *errs.AppError)
 	ById(string) (*Customer, *errs.AppError)
 }
