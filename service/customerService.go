@@ -2,12 +2,13 @@ package service
 
 import (
 	"github.com/Banking-System/domain"
+	"github.com/Banking-System/dto"
 	"github.com/Banking-System/errs"
 )
 
 type CustomerService interface {
 	GetAllCustomer(string) ([]domain.Customer, *errs.AppError)
-	GetCustomer(string) (*domain.Customer, *errs.AppError)
+	GetCustomer(string) (*dto.CustomerResponse, *errs.AppError)
 	//getAllCustomer() ([]domain.Customer, error)
 }
 
@@ -25,9 +26,16 @@ func (s DefaultCustomerService) GetAllCustomer(status string) ([]domain.Customer
 	}
 	return s.repo.FindAll(status)
 }
-func (s DefaultCustomerService) GetCustomer(id string) (*domain.Customer, *errs.AppError) {
+func (s DefaultCustomerService) GetCustomer(id string) (*dto.CustomerResponse, *errs.AppError) {
+	c, err := s.repo.ById(id)
+	if err != nil {
+		return nil, err
+	}
 
-	return s.repo.ById(id)
+	response := c.ToDto()
+	// return s.repo.ById(id)
+
+	return &response, nil
 }
 
 func NewCustomerService(repository domain.CustomerRepository) DefaultCustomerService {
