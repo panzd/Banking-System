@@ -2,7 +2,9 @@ package domain
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/Banking-System/errs"
@@ -70,19 +72,15 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer,*errs.AppError){
 			// log.Println("Error while scanning customer" + err.Error())
 			return nil, errs.NewUnexpectedError("Unexpected dataabase")
 		}
+
+
+
+
+
 	}
 	return &c, nil
 }
 
-func NewCustomerRepositoryDb() CustomerRepositoryDb {
-	client, err := sqlx.Open("mysql", "root:pan@tcp(localhost:3306)/banking")
-	if err != nil {
-		panic(err)
-	}
-	// See "Important settings" section.
-	client.SetConnMaxLifetime(time.Minute * 3)
-	client.SetMaxOpenConns(10)
-	client.SetMaxIdleConns(10)
-
+func NewCustomerRepositoryDb(dbClient *sqlx.DB) CustomerRepositoryDb {
 	return CustomerRepositoryDb{client}
 }
