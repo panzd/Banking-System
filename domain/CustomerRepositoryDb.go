@@ -2,10 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"fmt"
-	"log"
-	"os"
-	"time"
 
 	"github.com/Banking-System/errs"
 	"github.com/Banking-System/logger"
@@ -22,21 +18,20 @@ func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError
 	var err error
 	customers := make([]Customer, 0)
 	// 每次查询都会创建一个连接池
-	if status == ""{
-	findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
-	err := d.client.Select(&customers, findAllSql)
-	// rows, err := d.client.Query(findAllSql) //查询？
-	}else{
-	findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers where status=="?""
-	err := d.client.Select(&customers, findAllSql, status)
+	if status == "" {
+		findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
+		err = d.client.Select(&customers, findAllSql) // 不能直接赋值啊
+		// rows, err := d.client.Query(findAllSql) //查询？
+	} else {
+		findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers where status== ?"
+		err = d.client.Select(&customers, findAllSql, status)
 	}
-
 
 	if err != nil {
 		logger.Error("Error while querying customer table" + err.Error())
 		return nil, errs.NewUnexpectedError("Unexpected database error")
 	}
-	
+
 	// err = sqlx.StructScan(rows, &customers)
 	// if err != nil{
 	// 	logger.Error("Error while scanning customers" + err.Error())
@@ -55,7 +50,7 @@ func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError
 	return customers, nil
 }
 
-func (d CustomerRepositoryDb) ById(id string) (*Customer,*errs.AppError){
+func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
 	customerSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers where customer-id ?"
 
 	row := d.client.QueryRow(customerSql, id)
@@ -72,15 +67,10 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer,*errs.AppError){
 			// log.Println("Error while scanning customer" + err.Error())
 			return nil, errs.NewUnexpectedError("Unexpected dataabase")
 		}
-
-
-
-
-
 	}
 	return &c, nil
 }
 
 func NewCustomerRepositoryDb(dbClient *sqlx.DB) CustomerRepositoryDb {
-	return CustomerRepositoryDb{client}
+	return CustomerRepositoryDb{dbClient}
 }

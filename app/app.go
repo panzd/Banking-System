@@ -5,10 +5,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/Banking-System/domain"
 	"github.com/Banking-System/service"
 	"github.com/gorilla/mux"
+	"github.com/jmoiron/sqlx"
 )
 
 func sanityCheck() {
@@ -16,6 +18,7 @@ func sanityCheck() {
 		os.Getenv("SERVER_PORT") == "" {
 		log.Fatal("Environment variale not defined...")
 	}
+
 }
 func Start() {
 	//define routes
@@ -26,18 +29,19 @@ func Start() {
 	router := mux.NewRouter()
 
 	dbClient := getDbClient()
-	
+
 	customerRepositoryDb := domain.NewCustomerRepositoryDb(dbClient)
-	accountReposioryDb := domain.NewCustomerRepositoryDb(dbClient)
+	accountRepositoryDb := domain.NewAccountRepositoryDb(dbClient)
 
-	ch := CustomerHandlers{service.NewCustomerService(CustomerRepositoryDb)}
-
+	ch := CustomerHandlers{service.NewCustomerService(customerRepositoryDb)}
+	ah := AccountHander{service.NewAccountService(accountRepositoryDb)}
 
 	// ch := CustomerHandlers{service.NewCustomerService(domain.NewCustomerRepositoryDb(dbClient))}
 
 	router.HandleFunc("/customers", ch.getAllCustomers).Methods(http.MethodGet) //http中的约束条件
-
 	router.HandleFunc("/customers/{customer_id:[0-9]+}", ch.getCustomer).Methods(http.MethodGet)
+	router.HandleFunc("/customers/{customer_id:[0-9]+}/account", ah.NewAccount).Methods(http.MethodPost)
+
 	// router.HandleFunc("/customers", createCustomer).Methods(http.MethodPost)
 
 	// router.HandleFunc("/customers/{customer_id:[0-9]+}", getCustomer).Methods(http.MethodGet)
@@ -55,14 +59,14 @@ func Start() {
 	//
 }
 
-func getDbClient() *sqlx.DB{
+func getDbClient() *sqlx.DB {
 	dbUser := os.Getenv("DB_USER")
 	dbPasswd := os.Getenv("DB_PASSWD")
 	dbAddr := os.Getenv("DB_ADDR")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
-	dataSource := fmt.Sprintf(("%s:%s@tcp(%s:%s)/%s"), dbUser, dbPadbPasswd,dbAddr,dbPort,dbName))
+	dataSource := fmt.Sprintf(("%s:%s@tcp(%s:%s)/%s"), dbUser, dbPasswd, dbAddr, dbPort, dbName)
 
 	// dataSource := fmt.Sprintf("root:pan@tcp(localhost:3306)/banking")
 

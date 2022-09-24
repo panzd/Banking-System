@@ -17,6 +17,11 @@ type DefaultAccountService struct {
 }
 
 func (s DefaultAccountService) NewAccount(req dto.NewAccountRequest) (*dto.NewAccountResponse, *errs.AppError) {
+
+	if err := req.Validate(); err != nil {
+		return nil, err
+	}
+
 	a := domain.Account{
 		AccountId:   "",
 		CustomerId:  req.CustomerId,
@@ -31,5 +36,9 @@ func (s DefaultAccountService) NewAccount(req dto.NewAccountRequest) (*dto.NewAc
 	}
 	response := newAccount.ToNewAccountResponseDto()
 
-	return &response, nil
+	return response, nil //已经是引用了
+}
+
+func NewAccountService(repo domain.AccountRepository) DefaultAccountService {
+	return DefaultAccountService{repo}
 }

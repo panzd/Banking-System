@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"strconv"
+
 	"github.com/Banking-System/errs"
 	"github.com/Banking-System/logger"
 	"github.com/jmoiron/sqlx"
@@ -14,7 +16,7 @@ func (d AccountRepositoryDb) Save(a Account) (*Account, *errs.AppError) {
 
 	sqlInsert := "INSERT INTO accounts(customer_id, opening_date, account_type, amount, status)  values(?,?,?,?,?)"
 
-	result, err := d.client.Exec(sqlInsert, a.Customerid, a.OpeningDate, a.AccountType, a.Amount, a.Status)
+	result, err := d.client.Exec(sqlInsert, a.CustomerId, a.OpeningDate, a.AccountType, a.Amount, a.Status)
 
 	if err != nil {
 		logger.Error("Error while creating new account" + err.Error())
@@ -28,7 +30,7 @@ func (d AccountRepositoryDb) Save(a Account) (*Account, *errs.AppError) {
 		return nil, errs.NewUnexpectedError("Unexpected error from database")
 	}
 
-	a.AccountId = strconv.FromatInt(id, 10) //没有这个包吗？
+	a.AccountId = strconv.FormatInt(id, 10) //没有这个包吗？
 
 	return &a, nil
 }
