@@ -41,7 +41,9 @@ func Start() {
 	router.HandleFunc("/customers", ch.getAllCustomers).Methods(http.MethodGet) //http中的约束条件
 	router.HandleFunc("/customers/{customer_id:[0-9]+}", ch.getCustomer).Methods(http.MethodGet)
 	router.HandleFunc("/customers/{customer_id:[0-9]+}/account", ah.NewAccount).Methods(http.MethodPost)
-
+	router.
+		HandleFunc("/customers/{customer_id:[0-9]+}/acoount/{account_id:[0-9]+}", ah.MakeTransaction).
+		Methods(http.MethodPost).Name("NewTransaction")
 	// router.HandleFunc("/customers", createCustomer).Methods(http.MethodPost)
 
 	// router.HandleFunc("/customers/{customer_id:[0-9]+}", getCustomer).Methods(http.MethodGet)
