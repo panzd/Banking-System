@@ -1,7 +1,8 @@
-# Banking-System 
-Golang中基于REST的微服务API开发，实现一个简易的银行系统
+# Banking-System By Golang
 
-使用到的组件有gorilla mux，使用到的工具有Postman、DBeaver
+Golang中基于REST API，实现一个简易的银行系统
+
+使用到的组件有gorilla mux
 
 - [ ]  在Postman中得到8000端口发送的JSON消息
 - [ ]  Go module 编译
