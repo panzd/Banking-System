@@ -23,6 +23,7 @@ func (a Account) ToNewAccountResponseDto() *dto.NewAccountResponse {
 	return &dto.NewAccountResponse{AccountId: a.AccountId} //  初始化,安全问题
 }
 
+//go:generate mockgen -destination=../mocks/domain/mockAccountRepository.go -package=domain github.com/Banking-System/domain AccountRepository
 type AccountRepository interface {
 	Save(Account) (*Account, *errs.AppError)
 	//在这里添加方法
