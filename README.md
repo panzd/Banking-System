@@ -1,8 +1,23 @@
 # Banking-System By Golang
 
-Golang中基于REST API，实现一个简易的银行系统,实现用户与账户的增删改查.
+Golang中基于REST API，实现一个简易的银行系统，实现以下功能:
 
-使用到的组件有gorilla/mux, gomock, jwt-go, 运用了领域设计模型.
+- 用户的增删改查
+- 账户金额的存入与提出
+- 基于角色的访问控制RBAC
+
+##
+
+运用到的组件:
+
+- gorilla/mux
+- gomock
+- jwt-go
+- 运用了领域设计模型
+
+##
+
+步骤概述
 
 - [ ]  在Postman中得到8000端口发送的JSON消息
 - [ ]  Go module 编译
@@ -24,9 +39,3 @@ Golang中基于REST API，实现一个简易的银行系统,实现用户与账�
 - [ ]  创建用户账户
 - [ ]  验证账户
 - [ ]  进行系统测试
-
-
-
-
- 
-
